@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trend Mart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+            background-color: #333;
+            color: #fff;
+            padding: 1rem;
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        nav {
+            background-color: #444;
+            color: #fff;
+            padding: 0.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        nav ul li {
+            position: relative;
+            margin: 0 1rem;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: #555;
+        }
+
+        nav ul li ul {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #444;
+            padding: 0;
+            list-style-type: none;
+            margin: 0;
+            min-width: 150px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            z-index: 2000;
+        }
+
+        nav ul li:hover ul {
+            display: block;
+        }
+
+        nav ul li ul li {
+            margin: 0;
+        }
+
+        nav ul li ul li a {
+            padding: 0.5rem 1rem;
+            color: #fff;
+            transition: background-color 0.3s;
+        }
+
+        nav ul li ul li a:hover {
+            background-color: #555;
+        }
+
+        .hamburger {
+            display: none;
+            font-size: 30px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .mobile-nav {
+            display: none;
+            background-color: #444;
+            position: absolute;
+            top: 60px; /* Adjust based on your nav height */
+            left: 0;
+            width: 100%;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            max-height: 400px; /* Set max-height for scrolling */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+
+        .mobile-nav ul {
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mobile-nav ul li {
+            margin: 0;
+            border-bottom: 1px solid #555;
+        }
+
+        .mobile-nav ul li a {
+            padding: 1rem;
+            color: #fff;
+            display: block;
+        }
+
+        .mobile-nav ul li a:hover {
+            background-color: #555;
+        }
+
+        /* Draggable navigation */
+        #draggable-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            cursor: grab;
+            background-color: #444;
+            z-index: 1000;
+        }
+
+        iframe {
+            border: none;
+            width: 100%;
+            height: calc(100vh - 56px);
+        }
+
+        @media (max-width: 768px) {
+            iframe {
+                height: calc(100vh - 100px);
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .mobile-nav {
+                display: block;
+            }
+
+            .mobile-nav ul li ul {
+                display: none;
+            }
+
+            .mobile-nav ul li:hover ul {
+                display: block;
+            }
+        }
+
+        /* Modal styles */
+        #priceModal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        #priceModalContent {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        #closeModal {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #closeModal:hover,
+        #closeModal:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Trend Mart</h1>
+
+    <!-- Draggable Nav -->
+    <nav id="draggable-nav">
+        <span class="hamburger" onclick="toggleNav()">&#9776;</span>
+        <ul id="desktop-nav">
+            <li><a href="home.html" target="content" onclick="showContentAndHideNav()">Home</a></li>
+            <li><a href="shoe.html" target="content" onclick="showContentAndHideNav()">Shoe</a></li>
+            <li>
+                <a href="#" onclick="toggleSubmenu(event)">Dress</a>
+                <ul>
+                    <li><a href="shirt.html" target="content" onclick="showContentAndHideNav()">Shirt</a></li>
+                    <li><a href="pant.html" target="content" onclick="showContentAndHideNav()">Pant</a></li>
+                    <li><a href="combo.html" target="content" onclick="showContentAndHideNav()">Combo</a></li>
+                    <li><a href="tshirt.html" target="content" onclick="showContentAndHideNav()">Print T-Shirt</a></li>
+                    <li><a href="combotshirt.html" target="content" onclick="showContentAndHideNav()">Combo T-Shirt</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" onclick="toggleSubmenu(event)">Watch</a>
+                <ul>
+                    <li><a href="smart.html" target="content" onclick="showContentAndHideNav()">Smart Watch</a></li>
+                    <li><a href="analog.html" target="content" onclick="showContentAndHideNav()">Analog Watch</a></li>
+                    <li><a href="smc.html" target="content" onclick="showContentAndHideNav()">Smart Watch Combo</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" onclick="toggleSubmenu(event)">Airpod</a>
+                <ul>
+                    <li><a href="airpod.html" target="content" onclick="showContentAndHideNav()">Airpod</a></li>
+                    <li><a href="headphone.html" target="content" onclick="showContentAndHideNav()">Headphone</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" onclick="toggleSubmenu(event)">Chappal</a>
+                <ul>
+                    <li><a href="crocs.html" target="content" onclick="showContentAndHideNav()">Crocs</a></li>
+                    <li><a href="chappal.html" target="content" onclick="showContentAndHideNav()">Others</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" onclick="toggleSubmenu(event)">Bag</a>
+                <ul>
+                    <li><a href="side.html" target="content" onclick="showContentAndHideNav()">Side Bag</a></li>
+                    <li><a href="school.html" target="content" onclick="showContentAndHideNav()">School Bag</a></li>
+                    <li><a href="travel.html" target="content" onclick="showContentAndHideNav()">Travel Bag</a></li>
+                </ul>
+            </li>
+            <li><a href="other.html" target="content" onclick="showContentAndHideNav()">Others</a></li>
+            <li><a href="purchase.html" target="content" onclick="showContentAndHideNav()">How to Purchase</a></li>
+            <li><a href="about.html" target="content" onclick="showContentAndHideNav()">About</a></li>
+        </ul>
+        <div class="mobile-nav" id="mobile-nav">
+            <ul>
+                <li><a href="home.html" target="content" onclick="showContentAndHideNav()">Home</a></li>
+                <li><a href="shoe.html" target="content" onclick="showContentAndHideNav()">Shoe</a></li>
+                <li>
+                    <a href="#" onclick="toggleSubmenu(event)">Dress</a>
+                    <ul>
+                        <li><a href="shirt.html" target="content" onclick="showContentAndHideNav()">Shirt</a></li>
+                        <li><a href="pant.html" target="content" onclick="showContentAndHideNav()">Pant</a></li>
+                        <li><a href="combo.html" target="content" onclick="showContentAndHideNav()">Combo</a></li>
+                        <li><a href="tshirt.html" target="content" onclick="showContentAndHideNav()">Print T-Shirt</a></li>
+                        <li><a href="combotshirt.html" target="content" onclick="showContentAndHideNav()">Combo T-Shirt</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" onclick="toggleSubmenu(event)">Watch</a>
+                    <ul>
+                        <li><a href="smart.html" target="content" onclick="showContentAndHideNav()">Smart Watch</a></li>
+                        <li><a href="analog.html" target="content" onclick="showContentAndHideNav()">Analog Watch</a></li>
+                        <li><a href="smc.html" target="content" onclick="showContentAndHideNav()">Smart Watch Combo</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" onclick="toggleSubmenu(event)">Airpod</a>
+                    <ul>
+                        <li><a href="airpod.html" target="content" onclick="showContentAndHideNav()">Airpod</a></li>
+                        <li><a href="headphone.html" target="content" onclick="showContentAndHideNav()">Headphone</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" onclick="toggleSubmenu(event)">Chappal</a>
+                    <ul>
+                        <li><a href="crocs.html" target="content" onclick="showContentAndHideNav()">Crocs</a></li>
+                        <li><a href="chappal.html" target="content" onclick="showContentAndHideNav()">Others</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" onclick="toggleSubmenu(event)">Bag</a>
+                    <ul>
+                        <li><a href="side.html" target="content" onclick="showContentAndHideNav()">Side Bag</a></li>
+                        <li><a href="school.html" target="content" onclick="showContentAndHideNav()">School Bag</a></li>
+                        <li><a href="travel.html" target="content" onclick="showContentAndHideNav()">Travel Bag</a></li>
+                    </ul>
+                </li>
+                <li><a href="other.html" target="content" onclick="showContentAndHideNav()">Others</a></li>
+                <li><a href="purchase.html" target="content" onclick="showContentAndHideNav()">How to Purchase</a></li>
+                <li><a href="about.html" target="content" onclick="showContentAndHideNav()">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <iframe name="content"></iframe>
+
+    <!-- Modal for Pricing -->
+    <div id="priceModal">
+        <div id="priceModalContent">
+            <span id="closeModal">&times;</span>
+            <h2>Pricing Information</h2>
+            <p>Here is the pricing information for the selected product.</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleNav() {
+            var nav = document.getElementById("mobile-nav");
+            nav.style.display = (nav.style.display === "block") ? "none" : "block";
+        }
+
+        function toggleSubmenu(event) {
+            event.preventDefault();
+            var submenu = event.target.nextElementSibling;
+            if (submenu && submenu.tagName === 'UL') {
+                submenu.style.display = (submenu.style.display === "block") ? "none" : "block";
+            }
+        }
+
+        function showContentAndHideNav() {
+            // Show content (assuming iframe is used for content display)
+            var iframe = document.querySelector('iframe[name="content"]');
+            iframe.contentWindow.location.reload();
+
+            // Hide mobile nav
+            var mobileNav = document.getElementById("mobile-nav");
+            if (mobileNav.style.display === "block") {
+                mobileNav.style.display = "none";
+            }
+        }
+        
+        document.getElementById("closeModal").onclick = function() {
+            document.getElementById("priceModal").style.display = "none";
+        };
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById("priceModal")) {
+                document.getElementById("priceModal").style.display = "none";
+            }
+        };
+    </script>
+</body>
+</html>

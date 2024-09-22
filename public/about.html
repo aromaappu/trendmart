@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trend Mart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 2.5em;
+            margin-top: 50px;
+        }
+
+        p {
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .social-links p {
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .customize-btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .customize-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        const message = 'I would like to customize the print.';
+        const encodedMessage = encodeURIComponent(message);
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('.customize-btn').href = `https://wa.me/9188384350?text=${encodedMessage}`;
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Trend Mart</h1>
+        <p>Founded in 2023, Trend Mart is a proud Mallu dealer specializing in men's fashion. We provide high-quality clothing and accessories through our convenient online platform, 
+            focusing on the latest trends to help every man look his best. With all-India delivery, we ensure that our stylish products are accessible to customers across the country, 
+            all backed by our commitment to exceptional service.</p>
+
+        <p>Please note that product prices may change according to current trends. Make sure to check the latest prices before placing your order.</p>
+
+        <p>If you need any product that is not in this, just send a photo.</p>
+
+        <a href="https://wa.me/9188384350?text=I%20would%20like%20to%20customize%20the%20print." class="customize-btn" target="_blank">Customize Print T-Shirt</a>
+
+        <div class="social-links">
+            <p>Follow our Instagram:</p> 
+            <a href="https://www.instagram.com/trend._.mart_official?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==">Click here</a>
+
+            <p>Join our WhatsApp group:</p> 
+            <a href="https://chat.whatsapp.com/JNq2Yx8lbp7BQLcAemjRKE">Click here</a>
+
+            <p>Join our Telegram:</p> 
+            <a href="https://t.me/trend_mart_offi">Click here</a>
+        </div>
+    </div>
+</body>
+</html>

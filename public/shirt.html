@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Shopping Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            margin: 20px 0;
+            color: #333;
+        }
+        .product-container {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .product {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin: 15px;
+            padding: 15px;
+            text-align: center;
+            width: 200px;
+            transition: transform 0.2s ease;
+        }
+        .product:hover {
+            transform: scale(1.05);
+        }
+        .product img {
+            max-width: 150px;
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .product p {
+            margin: 10px 0;
+            color: #555;
+        }
+        /* Full-Screen Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .modal-content {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 800px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+        }
+        .modal img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        .close-btn {
+            background-color: #444;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .buy-btn {
+            display: inline-block;
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 300px;
+        }
+        .buy-btn:hover {
+            background-color: #218838;
+        }
+        .similar-products {
+            display: flex;
+            overflow-x: auto;
+            margin-top: 20px;
+            padding-bottom: 10px;
+            justify-content: center;
+        }
+        .similar-products img {
+            max-width: 100px;
+            max-height: 100px;
+            object-fit: cover;
+            cursor: pointer;
+            margin-right: 10px;
+            border-radius: 8px;
+            transition: transform 0.2s ease;
+        }
+        .similar-products img:hover {
+            transform: scale(1.05);
+        }
+        /* Ensure product code is on a new line */
+        .modal-content p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome to Trend Mart</h1>
+
+    <div class="product-container">
+        <script>
+            const products = [
+                { id: 1, name: "Product 1", price: "₹ 849/-", img: "shirt/s1.jpeg", code: "GS<br><br>full sleeves" },
+                { id: 2, name: "Product 2", price: "₹ 849/-", img: "shirt/s2.jpeg", code: "GS<br><br>full sleeves" },
+                { id: 3, name: "Product 3", price: "₹ 849/-", img: "shirt/s3.jpeg", code: "GS<br><br>full sleeves" },
+                { id: 4, name: "Product 4", price: "₹ 649/-", img: "shirt/s4.jpeg", code: "ks<br><br>CRUSH COTTON fabric" },
+                { id: 5, name: "Product 5", price: "₹ 749/-", img: "shirt/s5.jpeg", code: "viv<br><br>full sleave" },
+                { id: 6, name: "Product 6", price: "₹ 949/-", img: "shirt/s6.jpeg", code: "GS<br><br>full sleave" },
+                { id: 7, name: "Product 7", price: "₹ 999/-", img: "shirt/s7.jpeg", code: "GS<br><br>full sleave" },
+                { id: 8, name: "Product 8", price: "₹ 749/-", img: "shirt/s8.jpeg", code: "GS<br><br>IMPORTED 5 sleave" },
+                { id: 9, name: "Product 9", price: "₹ 799/-", img: "shirt/s9.jpeg", code: "GS<br><br>IMPORTED 5 sleave" },
+                { id: 10, name: "Product 10", price: "₹ 849/-", img: "shirt/s10.jpeg", code: "GS<br><br>DOWNSHOULDER SHIRTS" },
+
+                { id: 11, name: "Product 11", price: "₹ 749/-", img: "shirt/s11.jpeg", code: "GS<br><br>IMPORTED 5 sleave" },
+                { id: 12, name: "Product 12", price: "₹ 1049/-", img: "shirt/s12.jpeg", code: "GS<br><br>IMPORTED full sleave" },
+                { id: 13, name: "Product 13", price: "₹ 849/-", img: "shirt/s13.jpeg", code: "GS<br><br>IMPORTED NET FABRIC" },
+                { id: 14, name: "Product 14", price: "₹ 849/-", img: "shirt/s14.jpeg", code: "GS<br><br>IMPORTED NET FABRIC" },
+                { id: 15, name: "Product 15", price: "₹ 899/-", img: "shirt/s15.jpeg", code: "GS<br><br>IMPORTED FABRIC" },
+                { id: 16, name: "Product 16", price: "₹ 899/-", img: "shirt/s16.jpeg", code: "GS<br><br>IMPORTED FABRIC" },
+                { id: 17, name: "Product 17", price: "₹ 990/-", img: "shirt/s17.jpeg", code: "GS<br><br>full sleave" },
+                { id: 18, name: "Product 18", price: "₹ 990/-", img: "shirt/s18.jpeg", code: "GS<br><br>full sleave" },
+                { id: 19, name: "Product 19", price: "₹ 999/-", img: "shirt/s19.jpeg", code: "viv<br><br>Drop Shoulder" },
+                { id: 20, name: "Product 20", price: "₹ 999/-", img: "shirt/s20.jpeg", code: "GS<br><br>IMPORTED FABRIC" },
+
+                { id: 21, name: "Product 21", price: "₹ 799/-", img: "shirt/s21.jpeg", code: "GS<br><br>IMPORTED FABRIC" },
+                { id: 22, name: "Product 22", price: "₹ 799/-", img: "shirt/s22.jpeg", code: "GS<br><br>IMPORTED NET FABRIC" },
+                { id: 23, name: "Product 23", price: "₹ 799/-", img: "shirt/s23.jpeg", code: "GS<br><br>IMPORTED NET FABRIC" },
+                { id: 24, name: "Product 24", price: "₹ 999/-", img: "shirt/s24.jpeg", code: "GS<br><br>IMPORTED FABRIC" },
+                { id: 25, name: "Product 25", price: "₹ 499/-", img: "shirt/s25.jpeg", code: "SL<br><br>DOWN BUTTON HARD   COLLAR" },
+                { id: 26, name: "Product 26", price: "₹ 749/-", img: "shirt/s26.jpeg", code: "kS<br><br>RL Polo Designer Shirt" },
+                { id: 27, name: "Product 27", price: "₹ 999/-", img: "shirt/s27.jpeg", code: "ks<br><br>Full Sleeves Crushed Desinger shirts" },
+                { id: 28, name: "Product 28", price: "₹ 799/-", img: "shirt/s28.jpeg", code: "Sl<br><br>Crushed fabric" },
+                { id: 29, name: "Product 29", price: "₹ 749/-", img: "shirt/s29.jpeg", code: "SL<br><br>Winter shirts" },
+                { id: 30, name: "Product 30", price: "₹ 699/-", img: "shirt/s30.jpeg", code: "kS<br><br>cotrise fabric" },
+
+                { id: 31, name: "Product 31", price: "₹ 599/-", img: "shirt/s31.jpeg", code: "kS<br><br>Full Sleeves Lycra print  shirts" },
+                { id: 32, name: "Product 32", price: "₹ 699/-", img: "shirt/s32.jpeg", code: "kS<br><br>Fluffy jackets" },
+                { id: 33, name: "Product 33", price: "₹ 549/-", img: "shirt/s33.jpeg", code: "SL<br><br>Lycra Premium" },
+                { id: 34, name: "Product 34", price: "₹ 549/-", img: "shirt/s34.jpeg", code: "SL<br><br>Lycra Premium" },
+                { id: 35, name: "Product 35", price: "₹ 549/-", img: "shirt/s35.jpeg", code: "SL<br><br>Lycra Premium" },
+                { id: 36, name: "Product 36", price: "₹ 549/-", img: "shirt/s36.jpeg", code: "SL<br><br>Lycra Premium" },
+                { id: 37, name: "Product 37", price: "₹ 549/-", img: "shirt/s37.jpeg", code: "SL<br><br>Lycra Premium" },
+                { id: 38, name: "Product 38", price: "₹ 599/-", img: "shirt/s38.jpeg", code: "SL<br><br>Lycra Premium" },
+                { id: 39, name: "Product 39", price: "₹ 549/-", img: "shirt/s39.jpeg", code: "SL<br><br>Lycra Premium" },
+                { id: 40, name: "Product 40", price: "₹ 549/-", img: "shirt/s40.jpeg", code: "kS<br><br>Lycra Premium" },
+
+                { id: 41, name: "Product 41", price: "₹ 599/-", img: "shirt/s41.jpeg", code: "sL<br><br>Lycra Premium" },
+                { id: 42, name: "Product 42", price: "₹ 599/-", img: "shirt/s42.jpeg", code: "SL<br><br>Lycra Premium" },
+                { id: 43, name: "Product 43", price: "₹ 599/-", img: "shirt/s43.jpeg", code: "SL<br><br>Lycra Premium" },
+                { id: 44, name: "Product 44", price: "₹ 999/-", img: "shirt/s44.jpeg", code: "SL<br><br>PREMIUM POPCORN " },
+                { id: 45, name: "Product 45", price: "₹ 599/-", img: "shirt/s45.jpeg", code: "KS/SL<br><br>Gucci hoodies" },
+                { id: 46, name: "Product 46", price: "₹ 599/-", img: "shirt/s46.jpeg", code: "kS/SL<br><br>Gucci hoodies" },
+                { id: 47, name: "Product 47", price: "₹ 599/-", img: "shirt/s47.jpeg", code: "kS/SL<br><br>Gucci hoodies" },
+                { id: 48, name: "Product 48", price: "₹ 599/-", img: "shirt/s48.jpeg", code: "kS<br><br>full collarr denim" },
+                { id: 49, name: "Product 49", price: "₹ 599/-", img: "shirt/s49.jpeg", code: "kS<br><br>Towel fabric" },
+                { id: 50, name: "Product 50", price: "₹ 699/-", img: "shirt/s50.jpeg", code: "kS<br><br>Windcheater" },
+
+                { id: 51, name: "Product 51", price: "₹ 1049/-", img: "shirt/s51.jpeg", code: "kS<br><br>Windcheater" },
+                { id: 52, name: "Product 52", price: "₹ 1049/-", img: "shirt/s52.jpeg", code: "kS<br><br>Windcheater" },
+                { id: 53, name: "Product 53", price: "₹ 1049/-", img: "shirt/s53.jpeg", code: "kS<br><br>Windcheater" },
+                { id: 54, name: "Product 54", price: "₹ 1049/-", img: "shirt/s54.jpeg", code: "kS<br><br>Windcheater" },
+                { id: 55, name: "Product 55", price: "₹ 1049/-", img: "shirt/s55.jpeg", code: "kS<br><br>Windcheater" },
+                
+        ];
+
+            products.forEach(product => {
+                document.write(`
+                    <div class="product" onclick="showDetails(${product.id})">
+                        <img src="${product.img}" alt="${product.name}">
+                        <p>${product.name}</p>
+                        <p>Price: ${product.price}</p>
+                    </div>
+                `);
+            });
+        </script>
+    </div>
+
+    <!-- Modal for Product Details -->
+    <div id="modal" class="modal">
+        <div class="modal-content" id="modal-content">
+            <button class="close-btn" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        function showDetails(productId) {
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modal-content');
+            
+            // Clear previous content except the close button
+            modalContent.innerHTML = '<button class="close-btn" onclick="closeModal()">Close</button>';
+
+            // Find the selected product details
+            const product = products.find(p => p.id === productId);
+
+            // Add the product details to the modal
+            modalContent.innerHTML += `
+                <img src="${product.img}" alt="${product.name}">
+                <p><strong>${product.name}</strong></p>
+                <p>Price: ${product.price}</p>
+                <p><strong>Product code: ${product.code}</strong></p>
+                <a href="https://wa.me/9188384350?text=${encodeURIComponent('I am interested to buy this product. Product code: ' + product.code)}" class="buy-btn" target="_blank">Buy Now</a>
+                <h3>Similar Products</h3>
+                <div class="similar-products" id="similar-products"></div>
+            `;
+            const similarProducts = getSimilarProducts(productId, 5);
+            const similarProductsContainer = document.getElementById('similar-products');
+            similarProducts.forEach(similarProduct => {
+                similarProductsContainer.innerHTML += `
+                    <img src="${similarProduct.img}" alt="${similarProduct.name}" onclick="showDetails(${similarProduct.id})">
+                `;
+            });
+
+            // Show the modal
+            modal.style.display = 'flex';
+        }
+
+        function getSimilarProducts(currentProductId, count) {
+            // Filter out the current product and shuffle the remaining products
+            const otherProducts = products.filter(p => p.id !== currentProductId);
+            otherProducts.sort(() => Math.random() - 0.5); // Shuffle array
+
+            // Return a subset of the shuffled array
+            return otherProducts.slice(0, count);
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Shopping Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            margin: 20px 0;
+            color: #333;
+        }
+        .product-container {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .product {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin: 15px;
+            padding: 15px;
+            text-align: center;
+            width: 200px;
+            transition: transform 0.2s ease;
+        }
+        .product:hover {
+            transform: scale(1.05);
+        }
+        .product img {
+            max-width: 150px;
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .product p {
+            margin: 10px 0;
+            color: #555;
+        }
+        /* Full-Screen Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .modal-content {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 800px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+        }
+        .modal img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        .close-btn {
+            background-color: #444;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .buy-btn {
+            display: inline-block;
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 300px;
+        }
+        .buy-btn:hover {
+            background-color: #218838;
+        }
+        .similar-products {
+            display: flex;
+            overflow-x: auto;
+            margin-top: 20px;
+            padding-bottom: 10px;
+            justify-content: center;
+        }
+        .similar-products img {
+            max-width: 100px;
+            max-height: 100px;
+            object-fit: cover;
+            cursor: pointer;
+            margin-right: 10px;
+            border-radius: 8px;
+            transition: transform 0.2s ease;
+        }
+        .similar-products img:hover {
+            transform: scale(1.05);
+        }
+        /* Ensure product code is on a new line */
+        .modal-content p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome to Trend Mart</h1>
+
+    <div class="product-container">
+        <script>
+            const products = [
+                { id: 1, name: "Product 1", price: "₹ 1449/-", img: "shoe/product1.jpeg", code: "viv" },
+                { id: 2, name: "Product 2", price: "₹ 549/-", img: "shoe/product2.jpeg", code: "viv" },
+                { id: 3, name: "Product 3", price: "₹ 1699/-", img: "shoe/product3.jpeg", code: "sm" },
+                { id: 4, name: "Product 4", price: "₹ 1499/-", img: "shoe/product5.jpeg", code: "sm" },
+                { id: 5, name: "Product 5", price: "₹ 1499/-", img: "shoe/product6.jpeg", code: "sm" },
+                { id: 6, name: "Product 6", price: "₹ 1599/-", img: "shoe/product7.jpeg", code: "sm" },
+                { id: 7, name: "Product 7", price: "₹ 1499/-", img: "shoe/product8.jpeg", code: "hex" },
+                { id: 8, name: "Product 8", price: "₹ 1499/-", img: "shoe/product9.jpeg", code: "hex" },
+                { id: 9, name: "Product 9", price: "₹ 1599/-", img: "shoe/product10.jpeg", code: "hex" },
+                { id: 10, name: "Product 10", price: "₹ 1499/-", img: "shoe/product11.jpeg", code: "sm" },
+                { id: 11, name: "Product 11", price: "₹ 1299/-", img: "shoe/product12.jpeg", code: "sm" },
+                { id: 12, name: "Product 12", price: "₹ 1599/-", img: "shoe/product13.jpeg", code: "sm" },
+                { id: 13, name: "Product 13", price: "₹ 1799/-", img: "shoe/product14.jpeg", code: "sm" },
+                { id: 14, name: "Product 14", price: "₹ 1699/-", img: "shoe/product15.jpeg", code: "sm" },
+                { id: 15, name: "Product 15", price: "₹ 1699/-", img: "shoe/product16.jpeg", code: "sm" },
+                { id: 16, name: "Product 16", price: "₹ 799/-", img: "shoe/product17.jpeg", code: "viv" },
+                { id: 17, name: "Product 17", price: "₹ 1249/-", img: "shoe/product18.jpeg", code: "sm" },
+                { id: 18, name: "Product 18", price: "₹ 1599/-", img: "shoe/product19.jpeg", code: "sm" },
+                { id: 19, name: "Product 19", price: "₹ 1499/-", img: "shoe/product20.jpeg", code: "sm" },
+                { id: 20, name: "Product 20", price: "₹ 1549/-", img: "shoe/product21.jpeg", code: "sm" },
+                { id: 21, name: "Product 21", price: "₹ 1199/-", img: "shoe/product22.jpeg", code: "viv" },
+                { id: 22, name: "Product 22", price: "₹ 1599/-", img: "shoe/product23.jpeg", code: "sm" },
+                { id: 23, name: "Product 23", price: "₹ 1599/-", img: "shoe/product24.jpeg", code: "sm" },
+                { id: 24, name: "Product 24", price: "₹ 1499/-", img: "shoe/product25.jpeg", code: "sm" },
+                { id: 25, name: "Product 25", price: "₹ 1499/-", img: "shoe/product26.jpeg", code: "sm" },
+                { id: 26, name: "Product 26", price: "₹ 3599/-", img: "shoe/product27.jpeg", code: "viv" },
+                { id: 27, name: "Product 27", price: "₹ 1599/-", img: "shoe/product28.jpeg", code: "sm" },
+                { id: 28, name: "Product 28", price: "₹ 1559/-", img: "shoe/product29.jpeg", code: "sm" },
+                { id: 29, name: "Product 29", price: "₹ 1599/-", img: "shoe/product30.jpeg", code: "sm" },
+                { id: 30, name: "Product 30", price: "₹ 1599/-", img: "shoe/product31.jpeg", code: "sm" },
+
+                { id: 31, name: "Product 31", price: "₹ 1599/-", img: "shoe/product32.jpeg", code: "sm" },
+                { id: 32, name: "Product 32", price: "₹ 1599/-", img: "shoe/product33.jpeg", code: "sm" },
+                { id: 33, name: "Product 33", price: "₹ 1599/-", img: "shoe/product34.jpeg", code: "sm" },
+                { id: 34, name: "Product 34", price: "₹ 1699/-", img: "shoe/product35.jpeg", code: "sm" },
+                { id: 35, name: "Product 35", price: "₹ 1399/-", img: "shoe/product36.jpeg", code: "VIV" },
+                { id: 36, name: "Product 36", price: "₹ 1599/-", img: "shoe/product37.jpeg", code: "sm" },
+                { id: 37, name: "Product 37", price: "₹ 1699/-", img: "shoe/product38.jpeg", code: "sm" },
+                { id: 38, name: "Product 38", price: "₹ 999/-", img: "shoe/product39.jpeg", code: "sm" },
+                { id: 39, name: "Product 39", price: "₹ 1649/-", img: "shoe/product40.jpeg", code: "BK" },
+                { id: 40, name: "Product 40", price: "₹ 1699/-", img: "shoe/product41.jpeg", code: "sm" },
+
+                { id: 41, name: "Product 41", price: "₹ 1699/-", img: "shoe/product42.jpeg", code: "sm" },
+                { id: 42, name: "Product 42", price: "₹ 1499/-", img: "shoe/product43.jpeg", code: "viv" },
+                { id: 43, name: "Product 43", price: "₹ 1599/-", img: "shoe/product44.jpeg", code: "viv" },
+                { id: 44, name: "Product 44", price: "₹ 1399/-", img: "shoe/product45.jpeg", code: "sm" },
+                { id: 45, name: "Product 45", price: "₹ 1099/-", img: "shoe/product46.jpeg", code: "viv" },
+                { id: 46, name: "Product 46", price: "₹ 2999/-", img: "shoe/product47.jpeg", code: "viv" },
+                { id: 47, name: "Product 47", price: "₹ 1599/-", img: "shoe/product48.jpeg", code: "sm" },
+                { id: 48, name: "Product 48", price: "₹ 1699/-", img: "shoe/product49.jpeg", code: "sm" },
+                { id: 49, name: "Product 49", price: "₹ 1699/-", img: "shoe/product50.jpeg", code: "sm" },
+                { id: 50, name: "Product 50", price: "₹ 2899/-", img: "shoe/product51.jpeg", code: "viv"},
+
+                { id: 51, name: "Product 51", price: "₹ 1499/-", img: "shoe/product52.jpeg", code: "viv"},
+                { id: 52, name: "Product 52", price: "₹ 2599/-", img: "shoe/product53.jpeg", code: "viv"},
+                { id: 53, name: "Product 53", price: "₹ 1699/-", img: "shoe/product54.jpeg", code: "sm"},
+                { id: 54, name: "Product 54", price: "₹ 1449/-", img: "shoe/product55.jpeg", code: "SM"},
+                { id: 55, name: "Product 55", price: "₹ 1499/-", img: "shoe/product56.jpeg", code: "sm"},
+                { id: 56, name: "Product 56", price: "₹ 1499/-", img: "shoe/product57.jpeg", code: "SM"},
+                { id: 57, name: "Product 57", price: "₹ 1499/-", img: "shoe/product58.jpeg", code: "SM"},
+                { id: 58, name: "Product 58", price: "₹ 1549/-", img: "shoe/product59.jpeg", code: "BK"},
+                { id: 59, name: "Product 59", price: "₹ 1499/-", img: "shoe/product60.jpeg", code: "BK"},
+                { id: 60, name: "Product 60", price: "₹ 1799/-", img: "shoe/product61.jpeg", code: "BK"},
+
+                { id: 61, name: "Product 61", price: "₹ 1199/-", img: "shoe/product62.jpeg", code: "sm" },
+                { id: 62, name: "Product 62", price: "₹ 1499/-", img: "shoe/product63.jpeg", code: "sm" },
+                { id: 63, name: "Product 63", price: "₹ 1049/-", img: "shoe/product64.jpeg", code: "sm" },
+                { id: 64, name: "Product 64", price: "₹ 1049/-", img: "shoe/product65.jpeg", code: "sm" },
+                { id: 65, name: "Product 65", price: "₹ 1499/-", img: "shoe/product66.jpeg", code: "sm" },
+                { id: 66, name: "Product 66", price: "₹ 1599/-", img: "shoe/product67.jpeg", code: "RF" },
+                { id: 67, name: "Product 67", price: "₹ 1099/-", img: "shoe/product68.jpeg", code: "VIV" },
+                { id: 68, name: "Product 68", price: "₹ 1599/-", img: "shoe/product69.jpeg", code: "SR" },
+                { id: 69, name: "Product 69", price: "₹ 1499/-", img: "shoe/product70.jpeg", code: "sm" },
+                { id: 70, name: "Product 70", price: "₹ 1099/-", img: "shoe/product71.jpeg", code: "RF" },
+
+                { id: 71, name: "Product 71", price: "₹ 1449/-", img: "shoe/product72.jpeg", code: "sm" },
+                { id: 72, name: "Product 72", price: "₹ 1599/-", img: "shoe/product73.jpeg", code: "sm" },
+                { id: 73, name: "Product 73", price: "₹ 1499/-", img: "shoe/product74.jpeg", code: "sm" },
+                { id: 74, name: "Product 74", price: "₹ 1699/-", img: "shoe/product75.jpeg", code: "sm" },
+                { id: 75, name: "Product 75", price: "₹ 1499/-", img: "shoe/product76.jpeg", code: "sm" },
+                { id: 76, name: "Product 76", price: "₹ 1599/-", img: "shoe/product77.jpeg", code: "VIV" },
+                { id: 77, name: "Product 77", price: "₹ 1399/-", img: "shoe/product78.jpeg", code: "sm" },
+                { id: 78, name: "Product 78", price: "₹ 599/-", img: "shoe/product79.jpeg", code: "SL" },
+                { id: 79, name: "Product 79", price: "₹ 1499/-", img: "shoe/product80.jpeg", code: "sm" },
+                { id: 80, name: "Product 80", price: "₹ 1299/-", img: "shoe/product81.jpeg", code: "sm" },
+
+                { id: 81, name: "Product 81", price: "₹ 1499/-", img: "shoe/product82.jpeg", code: "sm" },
+                { id: 82, name: "Product 82", price: "₹ 1799/-", img: "shoe/product83.jpeg", code: "sm" },
+                { id: 83, name: "Product 83", price: "₹ 1699/-", img: "shoe/product84.jpeg", code: "sm" },
+                { id: 84, name: "Product 84", price: "₹ 799/-", img: "shoe/product85.jpeg", code: "VIV" },
+                { id: 85, name: "Product 85", price: "₹ 1599/-", img: "shoe/product86.jpeg", code: "BK" },
+                { id: 86, name: "Product 86", price: "₹ 1299/-", img: "shoe/product87.jpeg", code: "sm" },
+                { id: 87, name: "Product 87", price: "₹ 1299/-", img: "shoe/product88.jpeg", code: "sm" },
+                { id: 88, name: "Product 88", price: "₹ 1499/-", img: "shoe/product89.jpeg", code: "BK" },
+                { id: 89, name: "Product 89", price: "₹ 1599/-", img: "shoe/product90.jpeg", code: "BK" },
+                { id: 90, name: "Product 90", price: "₹ 1699/-", img: "shoe/product91.jpeg", code: "sm" },
+
+                { id: 91, name: "Product 91", price: "₹ 1499/-", img: "shoe/product92.jpeg", code: "VIV" },
+                { id: 92, name: "Product 92", price: "₹ 1499/-", img: "shoe/product93.jpeg", code: "sm" },
+                { id: 93, name: "Product 93", price: "₹ 1499/-", img: "shoe/product94.jpeg", code: "VIV" },
+                { id: 94, name: "Product 94", price: "₹ 1499/-", img: "shoe/product95.jpeg", code: "BK" },
+                { id: 95, name: "Product 95", price: "₹ 1499/-", img: "shoe/product96.jpeg", code: "BK" },
+                { id: 96, name: "Product 96", price: "₹ 1499/-", img: "shoe/product97.jpeg", code: "BK" },
+                { id: 97, name: "Product 97", price: "₹ 1499/-", img: "shoe/product98.jpeg", code: "BK" },
+                { id: 98, name: "Product 98", price: "₹ 1499/-", img: "shoe/product99.jpeg", code: "BK" },
+                { id: 99, name: "Product 99", price: "₹ 1699/-", img: "shoe/product100.jpeg", code: "BK" },
+                { id: 100, name: "Product 100", price: "₹ 1699/-", img: "shoe/product101.jpeg", code: "sm" },
+                
+                
+                
+            ];
+
+            products.forEach(product => {
+                document.write(`
+                    <div class="product" onclick="showDetails(${product.id})">
+                        <img src="${product.img}" alt="${product.name}">
+                        <p>${product.name}</p>
+                        <p>Price: ${product.price}</p>
+                    </div>
+                `);
+            });
+        </script>
+    </div>
+
+    <!-- Modal for Product Details -->
+    <div id="modal" class="modal">
+        <div class="modal-content" id="modal-content">
+            <button class="close-btn" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        function showDetails(productId) {
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modal-content');
+            
+            // Clear previous content except the close button
+            modalContent.innerHTML = '<button class="close-btn" onclick="closeModal()">Close</button>';
+
+            // Find the selected product details
+            const product = products.find(p => p.id === productId);
+
+            // Add the product details to the modal
+            modalContent.innerHTML += `
+                <img src="${product.img}" alt="${product.name}">
+                <p><strong>${product.name}</strong></p>
+                <p>Price: ${product.price}</p>
+                <p><strong>Product code: ${product.code}</strong></p>
+                <a href="https://wa.me/9188384350?text=${encodeURIComponent('I am interested to buy this product. Product code: ' + product.code)}" class="buy-btn" target="_blank">Buy Now</a>
+                <h3>Similar Products</h3>
+                <div class="similar-products" id="similar-products"></div>
+            `;
+            const similarProducts = getSimilarProducts(productId, 5);
+            const similarProductsContainer = document.getElementById('similar-products');
+            similarProducts.forEach(similarProduct => {
+                similarProductsContainer.innerHTML += `
+                    <img src="${similarProduct.img}" alt="${similarProduct.name}" onclick="showDetails(${similarProduct.id})">
+                `;
+            });
+
+            // Show the modal
+            modal.style.display = 'flex';
+        }
+
+        function getSimilarProducts(currentProductId, count) {
+            // Filter out the current product and shuffle the remaining products
+            const otherProducts = products.filter(p => p.id !== currentProductId);
+            otherProducts.sort(() => Math.random() - 0.5); // Shuffle array
+
+            // Return a subset of the shuffled array
+            return otherProducts.slice(0, count);
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>

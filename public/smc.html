@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Shopping Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            margin: 20px 0;
+            color: #333;
+        }
+        .product-container {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .product {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin: 15px;
+            padding: 15px;
+            text-align: center;
+            width: 200px;
+            transition: transform 0.2s ease;
+        }
+        .product:hover {
+            transform: scale(1.05);
+        }
+        .product img {
+            max-width: 150px;
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .product p {
+            margin: 10px 0;
+            color: #555;
+        }
+        /* Full-Screen Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .modal-content {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 800px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+        }
+        .modal img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        .close-btn {
+            background-color: #444;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .buy-btn {
+            display: inline-block;
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 300px;
+        }
+        .buy-btn:hover {
+            background-color: #218838;
+        }
+        .similar-products {
+            display: flex;
+            overflow-x: auto;
+            margin-top: 20px;
+            padding-bottom: 10px;
+            justify-content: center;
+        }
+        .similar-products img {
+            max-width: 100px;
+            max-height: 100px;
+            object-fit: cover;
+            cursor: pointer;
+            margin-right: 10px;
+            border-radius: 8px;
+            transition: transform 0.2s ease;
+        }
+        .similar-products img:hover {
+            transform: scale(1.05);
+        }
+        /* Ensure product code is on a new line */
+        .modal-content p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome to Trend Mart</h1>
+
+    <div class="product-container">
+        <script>
+            const products = [
+                { id: 1, name: "Product 1", price: "₹ 1099/-", img: "smc/smc1.jpeg", code: "Like<br><br>i20 Ultra Max +  base Quality AirPods " },
+                { id: 2, name: "Product 2", price: "₹ 1499/-", img: "smc/smc2.jpeg", code: "Like<br><br>i20 Ultra Max " },
+                { id: 3, name: "Product 3", price: "₹ 1099/-", img: "smc/smc3.jpeg", code: "BK<br><br>T800 ULTRA 2<br>ULTRAPODS PRO EARBUD" },
+                { id: 4, name: "Product 4", price: "₹ 1199/-", img: "smc/smc4.jpeg", code: "SR<br><br>APPLE WATCH ULTRA<br>APPLE AIRPODS PRO<br>WIRELESS CHARGER<br>MAGSAFE<br>CHARGER ADAPTOR<br>LIGHTNING CABLE" },
+                { id: 5, name: "Product 5", price: "₹ 1399/-", img: "smc/smc5.jpeg", code: "VIV<br><br> ULTRA 10in1<br>Pro 2 TWS Earbud" },
+                { id: 6, name: "Product 6", price: "₹ 1199/-", img: "smc/smc6.jpeg", code: "VIV<br><br>S8 ultra<br><br>Series Ultra Pods<br>SERIES 8 ULTRA" },
+                { id: 7, name: "Product 7", price: "₹ 1149/-", img: "smc/smc7.jpeg", code: "BK<br><br> I9 PRO MAX SERIES 9<br>BOAT AIRDOPES ULTRAPOS 3  " },
+                { id: 8, name: "Product 8", price: "₹ 1299/-", img: "smc/smc8.jpeg", code: "BK<br><br>SAMSUNG ACTIVE 2<br>SAMSUNG BUDS " },
+                { id: 9, name: "Product 9", price: "₹ 1399/-", img: "smc/smc9.jpeg", code: "SR<br><br>7 IN 1 COMBO<br> AIRPOD PRO  TWS<br>JBL MINI BOOST 4" },
+                { id: 10, name: "Product 10", price: "₹ 949/-", img: "smc/smc10.jpeg", code: "VIV<br><br>IWATCH Series 8 ultra<br>AIRPODS PRO TWS" },
+
+                { id: 11, name: "Product 11", price: "₹ 1049/-", img: "smc/smc11.jpeg", code: "VIV<br><br>T800 ULTRA 45MM<br>ULTRA PODS" },
+                { id: 12, name: "Product 12", price: "₹ 1249/-", img: "smc/smc12.jpeg", code: "SR<br><br> T10 Series 8 ultra<br>AIRPOD 2 (USA Quality)<br>AIRPOD silicon pouch" },
+                { id: 13, name: "Product 13", price: "₹ 1199/-", img: "smc/smc13.jpeg", code: "BK<br><br>Basic Airpod<br>sun glass<br>series 8 ultra" },
+                { id: 14, name: "Product 14", price: "₹ 1349/-", img: "smc/smc14.jpeg", code: "BK<br><br>Apple Watch Series 8 Ultra 45 mm<br> Ultra Pods<br> Cable Protector" },
+                { id: 15, name: "Product 15", price: "₹ 1349/-", img: "smc/smc15.jpeg", code: "BK<br><br>Apple Watch Series 8 Ultra 45 mm<br> Ultra Pods<br> Cable Protector" },
+                { id: 16, name: "Product 16", price: "₹ 1099/-", img: "smc/smc16.jpeg", code: "BK<br><br>I8 SERIES 8 SMART WATCH<br>AIRPODS PRO TWS<br>AIRPODS TRANSPARENT TPU CASE<br>APPLE  EARPHONE<br>EARPHONE POUCH<br>CABLE PROTECTOR" },
+                { id: 17, name: "Product 17", price: "₹ 1299/-", img: "smc/smc17.jpeg", code: "BK<br><br>AIRPODS 2 USA QUALITY<BR>FOSSIL GEN8<BR>AIRPOD CASE" },
+                { id: 18, name: "Product 18", price: "₹ 599/-", img: "smc/smc18.jpeg", code: "Like<br><br>AIRPODS PRO TWS<BR>S8 PRO MADX<BR>AIRPOD CASE" },
+                { id: 19, name: "Product 19", price: "₹ 1799/-", img: "smc/smc19.jpeg", code: "BK<br><br>T900 ULTRA SMARTWATCH<br>NOISE ULTRAPODS 3 <br>LINKBITS SPEAKER<br>1 PREMIUM SPIGEN CLOTH STRAP " },
+                { id: 20, name: "Product 20", price: "₹ 1499/-", img: "smc/smc20.jpeg", code: "SR<br><br>SERIES 8 ULTRA<br>AIRPODS PRO 2 OG QUALITY" },
+                
+               
+               
+        ];
+
+            products.forEach(product => {
+                document.write(`
+                    <div class="product" onclick="showDetails(${product.id})">
+                        <img src="${product.img}" alt="${product.name}">
+                        <p>${product.name}</p>
+                        <p>Price: ${product.price}</p>
+                    </div>
+                `);
+            });
+        </script>
+    </div>
+
+    <!-- Modal for Product Details -->
+    <div id="modal" class="modal">
+        <div class="modal-content" id="modal-content">
+            <button class="close-btn" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        function showDetails(productId) {
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modal-content');
+            
+            // Clear previous content except the close button
+            modalContent.innerHTML = '<button class="close-btn" onclick="closeModal()">Close</button>';
+
+            // Find the selected product details
+            const product = products.find(p => p.id === productId);
+
+            // Add the product details to the modal
+            modalContent.innerHTML += `
+                <img src="${product.img}" alt="${product.name}">
+                <p><strong>${product.name}</strong></p>
+                <p>Price: ${product.price}</p>
+                <p><strong>Product code: ${product.code}</strong></p>
+                <a href="https://wa.me/9188384350?text=${encodeURIComponent('I am interested to buy this product. Product code: ' + product.code)}" class="buy-btn" target="_blank">Buy Now</a>
+                <h3>Similar Products</h3>
+                <div class="similar-products" id="similar-products"></div>
+            `;
+            const similarProducts = getSimilarProducts(productId, 5);
+            const similarProductsContainer = document.getElementById('similar-products');
+            similarProducts.forEach(similarProduct => {
+                similarProductsContainer.innerHTML += `
+                    <img src="${similarProduct.img}" alt="${similarProduct.name}" onclick="showDetails(${similarProduct.id})">
+                `;
+            });
+
+            // Show the modal
+            modal.style.display = 'flex';
+        }
+
+        function getSimilarProducts(currentProductId, count) {
+            // Filter out the current product and shuffle the remaining products
+            const otherProducts = products.filter(p => p.id !== currentProductId);
+            otherProducts.sort(() => Math.random() - 0.5); // Shuffle array
+
+            // Return a subset of the shuffled array
+            return otherProducts.slice(0, count);
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
